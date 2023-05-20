@@ -1,3 +1,4 @@
 {
-  "apiKey": "ZHsQusIQhMPOCbpz5wVdhoXXWObSmxBaJQZHZ6qw"
+  "apiKey" : "ZHsQusIQhMPOCbpz5wVdhoXXWObSmxBaJQZHZ6qw",
+  "baseUrl" : "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos"
 }

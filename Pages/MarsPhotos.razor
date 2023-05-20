@@ -1,0 +1,45 @@
+﻿@page "/mars-photos"
+@inject MarsForever.Services.NasaPhotoController PhotoController
+
+<h3>Mars Photos</h3>
+
+@if (photoUrls == null)
+{
+    <p>Loading...</p>
+}
+else if (photoUrls.Count == 0)
+{
+    <p>No photos available.</p>
+}
+else
+{
+    <div class="photo-container">
+        @foreach (var photoUrl in photoUrls)
+        {
+            <img src="@photoUrl" alt="Mars Photo">
+        }
+    </div>
+}
+
+@code {
+    private List<string> photoUrls;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadPhotosAsync();
+    }
+
+    private async Task LoadPhotosAsync()
+    {
+        try
+        {
+            var photosResponse = await PhotoController.GetCursoityRoverPhotos();
+            photoUrls = photosResponse.marsRoverPhotos.Select(photo => photo.imageUrl).ToList();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Failed to load Mars photos: {ex.Message}");
+        }
+    }
+}
+
