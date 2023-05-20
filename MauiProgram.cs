@@ -25,8 +25,6 @@ public static class MauiProgram
 		builder.Services.AddBlazorWebViewDeveloperTools();
 		builder.Logging.AddDebug();
 #endif
-
-		builder.Services.AddSingleton<WeatherForecastService>();
 		builder.Services.AddSingleton<NasaPhotoController>();
 
 		return builder.Build();
