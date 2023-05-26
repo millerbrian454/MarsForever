@@ -7,26 +7,24 @@ namespace MarsForever.Services
 {
     public class NasaPhotoController
     {
+        private const string baseUrl = "https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos";
         private readonly HttpClient httpClient;
-        private readonly IConfiguration configuration;
         private readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions
             {
             PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
             WriteIndented = true
             };
 
-    public NasaPhotoController(IConfiguration configuration)
+    public NasaPhotoController()
         {
-            this.configuration = configuration;
             httpClient = new HttpClient();
         }
         public async Task<PhotoResponse> GetCursoityRoverPhotos()
         {
             try
             {
-                string apiKey = configuration["apiKey"];
-                Uri baseUrl = new Uri(configuration["baseUrl"]);
-                string url = $"{baseUrl}?sol=1000&camera=fhaz&api_key={apiKey}";
+                string apiKey = "ZHsQusIQhMPOCbpz5wVdhoXXWObSmxBaJQZHZ6qw";
+                string url = $"{baseUrl}?sol=801&camera=fhaz&api_key={apiKey}";
                 HttpResponseMessage response = await httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
 
