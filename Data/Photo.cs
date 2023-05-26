@@ -1,20 +1,21 @@
 ﻿using Newtonsoft.Json;
+using System.Text.Json.Serialization;
 
 namespace MarsForever.Data
 {
     public class Photo
     {
-        [JsonProperty("id")]
+        [JsonPropertyName("id")]
         public int photoId { get; set; }
-        [JsonProperty("sol")]
+        [JsonPropertyName("sol")]
         public int sol { get; set; }
-        [JsonProperty("img_src")]
+        [JsonPropertyName("img_src")]
         public string imageUrl { get; set; }
-        [JsonProperty("earth_date")]
-        public DateTime earthDate { get; set; }
-        [JsonProperty("camera")]
+        [JsonPropertyName("earth_date")]
+        public string earthDate { get; set; }
+        [JsonPropertyName("camera")]
         public Camera camera { get; set; }
-        [JsonProperty("rover")]
+        [JsonPropertyName("rover")]
         public Rover rover { get; set; }
     }
 }

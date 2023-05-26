@@ -1,7 +1,10 @@
-﻿namespace MarsForever.Data
+﻿using System.Text.Json.Serialization;
+
+namespace MarsForever.Data
 {
     public class PhotoResponse
     {
-        public List<Photo> marsRoverPhotos { get; set; }
+        [JsonPropertyName("photos")]
+        public ICollection<Photo> marsRoverPhotos { get; set; }
     }
 }

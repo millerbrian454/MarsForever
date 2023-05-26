@@ -1,5 +1,6 @@
 ﻿@page "/mars-photos"
 @inject MarsForever.Services.NasaPhotoController PhotoController
+@using MarsForever.Data;
 
 <h3>Mars Photos</h3>
 
@@ -7,22 +8,22 @@
 {
     <p>Loading...</p>
 }
-else if (photoUrls.Count == 0)
+else if (photoUrls.marsRoverPhotos.Count == 0)
 {
     <p>No photos available.</p>
 }
 else
 {
     <div class="photo-container">
-        @foreach (var photoUrl in photoUrls)
+        @foreach (var photoUrl in photoUrls.marsRoverPhotos)
         {
-            <img src="@photoUrl" alt="Mars Photo">
+            <img src="@photoUrl.imageUrl" alt="Mars Photo">
         }
     </div>
 }
 
 @code {
-    private List<string> photoUrls;
+    private PhotoResponse photoUrls;
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,8 +34,7 @@ else
     {
         try
         {
-            var photosResponse = await PhotoController.GetCursoityRoverPhotos();
-            photoUrls = photosResponse.marsRoverPhotos.Select(photo => photo.imageUrl).ToList();
+            this.photoUrls = await PhotoController.GetCursoityRoverPhotos();
         }
         catch (Exception ex)
         {

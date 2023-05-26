@@ -1,5 +1,6 @@
 ﻿using MarsForever.Data;
 using Microsoft.Extensions.Configuration;
+using System.Diagnostics;
 using System.Text.Json;
 
 namespace MarsForever.Services
@@ -8,32 +9,36 @@ namespace MarsForever.Services
     {
         private readonly HttpClient httpClient;
         private readonly IConfiguration configuration;
-       
-        public NasaPhotoController(IConfiguration configuration)
+        private readonly JsonSerializerOptions _serializerOptions = new JsonSerializerOptions
+            {
+            PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+            WriteIndented = true
+            };
+
+    public NasaPhotoController(IConfiguration configuration)
         {
             this.configuration = configuration;
             httpClient = new HttpClient();
         }
-
         public async Task<PhotoResponse> GetCursoityRoverPhotos()
         {
             try
             {
                 string apiKey = configuration["apiKey"];
                 Uri baseUrl = new Uri(configuration["baseUrl"]);
-                string url = $"{baseUrl}?sol=801&api_key={apiKey}";
+                string url = $"{baseUrl}?sol=1000&camera=fhaz&api_key={apiKey}";
                 HttpResponseMessage response = await httpClient.GetAsync(url);
                 response.EnsureSuccessStatusCode();
 
-                string json = await response.Content.ReadAsStringAsync();
+                string photosResponse = await response.Content.ReadAsStringAsync();
+                var deserializedJsonResponse = JsonSerializer.Deserialize<PhotoResponse>(photosResponse, _serializerOptions);
 
-                PhotoResponse photosResponse = JsonSerializer.Deserialize<PhotoResponse>(json);
-
-                return photosResponse;
+                return deserializedJsonResponse;
             }
             catch (Exception ex)
             {
-                throw new ApplicationException("An error occurred while retrieving Mars photos.", ex);
+                Debug.WriteLine(@"\tERROR {0}", ex.Message);
+                throw;
             }
         }
     }
